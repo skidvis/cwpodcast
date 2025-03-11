@@ -1,6 +1,17 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute, GetStaticPathsResult } from 'astro';
 import fs from 'fs';
 import path from 'path';
+import { getPodcasts } from '../../utils/podcasts';
+
+// This function is required for dynamic routes in static builds
+export function getStaticPaths(): GetStaticPathsResult {
+  const podcasts = getPodcasts();
+  
+  // Return paths for all podcast files
+  return podcasts.map(podcast => ({
+    params: { file: podcast.filename }
+  }));
+}
 
 export const GET: APIRoute = async ({ params }) => {
   // Get the file path from the params
