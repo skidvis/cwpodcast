@@ -1,48 +1,92 @@
-# Astro Starter Kit: Basics
+# Covered Wheel Podcast
 
-```sh
-npm create astro@latest -- --template basics
+A podcast directory and RSS feed built with Astro.
+
+## Features
+
+- Display podcast episodes with audio player
+- Download MP3 files
+- Auto-updating RSS feed for podcast subscribers
+- iTunes podcast feed compatible
+- Responsive design
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later recommended)
+- npm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+3. Start the development server:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+```bash
+npm run dev
+```
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+4. Open your browser and navigate to `http://localhost:4321`
 
-## 🚀 Project Structure
+## Adding New Podcasts
 
-Inside of your Astro project, you'll see the following folders and files:
+To add new podcast episodes, simply place MP3 files in the `files` directory. The filename format should be:
+
+```
+name-YYYY-MM-DD.mp3
+```
+
+For example: `coveredwheel-2025-03-11.mp3`
+
+The application will automatically:
+- Extract the title from the filename (converting to title case)
+- Extract the date from the filename
+- Add the new episode to the podcast list
+- Update the RSS feed
+
+## Building for Production
+
+To build the application for production:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
+
+## RSS Feed
+
+The RSS feed is available at `/rss.xml` and is compatible with podcast players and iTunes.
+
+## Project Structure
 
 ```text
 /
-├── public/
+├── files/                  # MP3 files directory
+│   └── *.mp3               # Podcast episode files
+├── public/                 # Static assets
 │   └── favicon.svg
 ├── src/
-│   ├── layouts/
+│   ├── components/         # UI components
+│   │   └── PodcastList.astro
+│   ├── layouts/            # Page layouts
 │   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
+│   ├── pages/              # Page routes
+│   │   ├── index.astro     # Main podcast page
+│   │   ├── rss.xml.ts      # RSS feed generator
+│   │   └── files/[...file].ts # Dynamic route for serving MP3 files
+│   └── utils/              # Utility functions
+│       └── podcasts.ts     # Podcast file scanner
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Technologies Used
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [Astro](https://astro.build/) - The web framework
+- [@astrojs/rss](https://docs.astro.build/en/guides/rss/) - RSS feed generation

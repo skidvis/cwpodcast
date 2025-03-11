@@ -1,0 +1,166 @@
+---
+import { getPodcasts, type Podcast } from '../utils/podcasts';
+
+const podcasts = getPodcasts();
+---
+
+<div class="podcast-container">
+  <h1>CoveredWheel Podcast</h1>
+  
+  {podcasts.length === 0 ? (
+    <p class="no-podcasts">No podcasts available yet.</p>
+  ) : (
+    <ul class="podcast-list">
+      {podcasts.map((podcast: Podcast) => (
+        <li class="podcast-item">
+          <div class="podcast-info">
+            <h2>{podcast.title}</h2>
+            <p class="podcast-date">{podcast.date.toLocaleDateString()}</p>
+          </div>
+          <div class="podcast-controls">
+            <audio controls src={podcast.url}>
+              Your browser does not support the audio element.
+            </audio>
+            <a href={podcast.url} download={podcast.filename} class="download-button">
+              Download
+            </a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+  
+  <div class="rss-link">
+    <p>
+      Subscribe to our podcast: 
+      <a href="/rss.xml" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+        RSS Feed
+      </a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .podcast-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .no-podcasts {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 2rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .podcast-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .podcast-item {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .podcast-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .podcast-info {
+    margin-bottom: 1rem;
+  }
+  
+  .podcast-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .podcast-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .podcast-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  audio {
+    width: 100%;
+    border-radius: 30px;
+  }
+  
+  .download-button {
+    display: inline-block;
+    background: #4a6cf7;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+  
+  .download-button:hover {
+    background: #3a5ce5;
+  }
+  
+  .rss-link {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .rss-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a6cf7;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  
+  .rss-link a:hover {
+    color: #3a5ce5;
+  }
+  
+  @media (max-width: 600px) {
+    .podcast-container {
+      padding: 1rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .podcast-item {
+      padding: 1rem;
+    }
+  }
+</style>
