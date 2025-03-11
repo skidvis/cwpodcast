@@ -25,6 +25,6 @@ jobs:
         username: skidvis
         password: ${{ secrets.DOCKERHUB_TOKEN }}      
     - name: Build the Docker image
-      run: docker build -t ${{ secrets.DOCKER_USER }}/podcast-coveredwheel-com:latest .
+      run: docker build -t skidvis/podcast-coveredwheel-com:latest .
     - name: Push the docker image
-      run: docker push ${{ secrets.DOCKER_USER }}/podcast-coveredwheel-com:latest  
+      run: docker push skidvis/podcast-coveredwheel-com:latest  
