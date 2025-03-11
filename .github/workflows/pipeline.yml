@@ -1,0 +1,26 @@
+name: Build and Deploy to Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '18.17.x'
+    - name: NPM Install dependancies        
+      run: npm install
+    - name: NPM Build
+      run: npm run build
+    - name: Login to Docker
+      run: docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_PASS }}
+    - name: Build the Docker image
+      run: docker build -t ${{ secrets.DOCKER_USER }}/podcast-coveredwheel-com:latest .
+    - name: Push the docker image
+      run: docker push ${{ secrets.DOCKER_USER }}/podcast-coveredwheel-com:latest  
