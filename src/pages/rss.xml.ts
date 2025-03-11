@@ -4,11 +4,11 @@ import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
   const podcasts = getPodcasts();
-  const site = context.site || new URL('http://localhost:4321/');
+  const site = context.site || new URL('https://podcast.coveredwheel.com/');
   
   return rss({
-    title: 'Covered Wheel Podcast',
-    description: 'Listen to the latest episodes of the Covered Wheel Podcast',
+    title: 'CoveredWheel.com Podcast',
+    description: 'Listen to the latest episodes of the CoveredWheel.com Podcast',
     site: site.toString(),
     xmlns: {
       itunes: 'http://www.itunes.com/dtds/podcast-1.0.dtd',
@@ -29,13 +29,13 @@ export async function GET(context: APIContext) {
     })),
     customData: `
       <language>en-us</language>
-      <itunes:author>Covered Wheel</itunes:author>
+      <itunes:author>CoveredWheel</itunes:author>
       <itunes:category text="Technology"/>
       <itunes:explicit>false</itunes:explicit>
       <itunes:image href="${new URL('/favicon.svg', site).toString()}"/>
       <itunes:owner>
-        <itunes:name>Covered Wheel</itunes:name>
-        <itunes:email>info@example.com</itunes:email>
+        <itunes:name>CoveredWheel</itunes:name>
+        <itunes:email>info@coveredwheel.com</itunes:email>
       </itunes:owner>
     `
   });

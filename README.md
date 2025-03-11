@@ -1,4 +1,4 @@
-# Covered Wheel Podcast
+# CoveredWheel.com Podcast
 
 A podcast directory and RSS feed built with Astro.
 
