@@ -50,7 +50,7 @@ const formattedContent = content
 <Layout title={podcast.title}>
   <div class="episode-container">
     <h1>{podcast.title}</h1>
-    <p class="episode-date">{podcast.date.toLocaleDateString()}</p>
+    <p class="episode-date">{podcast.date.toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
     
     {podcast.description && (
       <p class="episode-description">{podcast.description}</p>
@@ -64,6 +64,8 @@ const formattedContent = content
         Download
       </a>
     </div>
+
+    <p class="episode-description" style="text-align: center;">Plan your next options play with <a href="https://optionstrat.com/coveredwheel">OptionStrat</a></p>
     
     <div class="episode-content">
       <Fragment set:html={formattedContent} />
