@@ -16,10 +16,10 @@ const podcasts = getPodcasts();
           <div class="podcast-info">
             <h2>
               <a href={`/episodes/${podcast.filename.replace('.mp3', '')}`} class="episode-link">
-                {podcast.title}
+                &#11166; {podcast.title}
               </a>
             </h2>
-            <p class="podcast-date">{podcast.date.toLocaleDateString()}</p>
+            <p class="podcast-date">{podcast.date.toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
             {podcast.description && (
               <p class="podcast-description">{podcast.description}</p>
             )}
