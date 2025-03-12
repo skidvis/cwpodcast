@@ -17,7 +17,7 @@ export async function GET(context: APIContext) {
     items: podcasts.map(podcast => ({
       title: podcast.title,
       pubDate: podcast.date,
-      description: `${podcast.title} - ${podcast.date.toLocaleDateString()}`,
+      description: podcast.description || `${podcast.title} - ${podcast.date.toLocaleDateString()}`,
       link: new URL(podcast.url, site).toString(),
       enclosure: {
         url: new URL(podcast.url, site).toString(),

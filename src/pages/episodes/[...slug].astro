@@ -1,0 +1,170 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'fs';
+import path from 'path';
+import { getPodcasts } from '../../utils/podcasts';
+
+export function getStaticPaths() {
+  const podcasts = getPodcasts();
+  
+  return podcasts.map(podcast => {
+    // Extract the base name without extension
+    const baseName = podcast.filename.replace('.mp3', '');
+    
+    return {
+      params: { slug: baseName },
+      props: { podcast }
+    };
+  });
+}
+
+const { podcast } = Astro.props;
+const mdFilePath = path.join(process.cwd(), 'files', podcast.filename.replace('.mp3', '.md'));
+
+// Read and parse the markdown file
+let content = '';
+let frontmatter = null;
+
+if (fs.existsSync(mdFilePath)) {
+  const mdContent = fs.readFileSync(mdFilePath, 'utf-8');
+  
+  // Extract frontmatter
+  const frontmatterMatch = mdContent.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+  if (frontmatterMatch) {
+    // The content is everything after the frontmatter
+    content = frontmatterMatch[2];
+  } else {
+    content = mdContent;
+  }
+}
+
+// Convert newlines to <br> tags and wrap paragraphs in <p> tags
+const formattedContent = content
+  .split('\n\n')
+  .map(paragraph => paragraph.trim())
+  .filter(paragraph => paragraph.length > 0)
+  .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+  .join('');
+---
+
+<Layout title={podcast.title}>
+  <div class="episode-container">
+    <h1>{podcast.title}</h1>
+    <p class="episode-date">{podcast.date.toLocaleDateString()}</p>
+    
+    {podcast.description && (
+      <p class="episode-description">{podcast.description}</p>
+    )}
+    
+    <div class="audio-player">
+      <audio controls src={podcast.url}>
+        Your browser does not support the audio element.
+      </audio>
+      <a href={podcast.url} download={podcast.filename} class="download-button">
+        Download
+      </a>
+    </div>
+    
+    <div class="episode-content">
+      <Fragment set:html={formattedContent} />
+    </div>
+    
+    <div class="back-link">
+      <a href="/">← Back to all episodes</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .episode-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .episode-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .episode-description {
+    color: #444;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  
+  .audio-player {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  audio {
+    width: 100%;
+    border-radius: 30px;
+  }
+  
+  .download-button {
+    display: inline-block;
+    background: #4a6cf7;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: background 0.2s ease;
+    width: fit-content;
+  }
+  
+  .download-button:hover {
+    background: #3a5ce5;
+  }
+  
+  .episode-content {
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+  
+  .episode-content p {
+    margin-bottom: 1.5rem;
+  }
+  
+  .back-link {
+    margin-top: 2rem;
+  }
+  
+  .back-link a {
+    color: #4a6cf7;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.2s ease;
+  }
+  
+  .back-link a:hover {
+    color: #3a5ce5;
+  }
+  
+  @media (max-width: 600px) {
+    .episode-container {
+      padding: 1rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
