@@ -30,9 +30,9 @@ export function getPodcasts(): Podcast[] {
     
     if (match) {
       const [_, name, dateStr] = match;
-      title = name.split('-').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-      ).join(' ');
+      // title = name.split('-').map(word => 
+      //   word.charAt(0).toUpperCase() + word.slice(1)
+      // ).join(' ');
       date = new Date(dateStr);
     }
     

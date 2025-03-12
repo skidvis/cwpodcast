@@ -29,12 +29,12 @@ export async function GET(context: APIContext) {
     })),
     customData: `
       <language>en-us</language>
-      <itunes:author>CoveredWheel</itunes:author>
+      <itunes:author>CoveredWheel.com</itunes:author>
       <itunes:category text="Technology"/>
       <itunes:explicit>false</itunes:explicit>
       <itunes:image href="${new URL('/favicon.svg', site).toString()}"/>
       <itunes:owner>
-        <itunes:name>CoveredWheel</itunes:name>
+        <itunes:name>CoveredWheel.com</itunes:name>
         <itunes:email>info@coveredwheel.com</itunes:email>
       </itunes:owner>
     `
