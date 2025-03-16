@@ -1,7 +1,9 @@
 ---
-link: '/files/coveredwheel-2025-03-16.mp3'
-title: '2025-03-16 - Bearish Sentiment Dominates'
-description: 'This week's CoveredWheel wrap-up reveals a cautious approach among users, with 70% of trades being Puts despite a slight market uptick. Top tickers include TSLA, NVDA, SOFI, LUNR, and TEM, showcasing a mix of balanced and defensive strategies.'
+link: "/files/coveredwheel-2025-03-16.mp3"
+title: "2025-03-16 - Bearish Sentiment Dominates"
+description: "This week's CoveredWheel wrap-up reveals a cautious approach among users, with 70% of trades being Puts despite a slight market uptick. Top tickers include TSLA, NVDA, SOFI, LUNR, and TEM, showcasing a mix of balanced and defensive strategies."
+date: 2025-03-16
+audioFile: "coveredwheel-2025-03-16.mp3"
 ---
 
 # CoveredWheel Weekly Wrap-up - March 16, 2025

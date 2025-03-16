@@ -1,66 +1,34 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import fs from 'fs';
-import path from 'path';
-import { getPodcasts } from '../../utils/podcasts';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
-export function getStaticPaths() {
-  const podcasts = getPodcasts();
+export async function getStaticPaths() {
+  const episodeEntries = await getCollection('episodes');
   
-  return podcasts.map(podcast => {
-    // Extract the base name without extension
-    const baseName = podcast.filename.replace('.mp3', '');
-    
-    return {
-      params: { slug: baseName },
-      props: { podcast }
-    };
-  });
+  return episodeEntries.map((entry: CollectionEntry<'episodes'>) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
 }
 
-const { podcast } = Astro.props;
-const mdFilePath = path.join(process.cwd(), 'files', podcast.filename.replace('.mp3', '.md'));
-
-// Read and parse the markdown file
-let content = '';
-let frontmatter = null;
-
-if (fs.existsSync(mdFilePath)) {
-  const mdContent = fs.readFileSync(mdFilePath, 'utf-8');
-  
-  // Extract frontmatter
-  const frontmatterMatch = mdContent.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
-  if (frontmatterMatch) {
-    // The content is everything after the frontmatter
-    content = frontmatterMatch[2];
-  } else {
-    content = mdContent;
-  }
-}
-
-// Convert newlines to <br> tags and wrap paragraphs in <p> tags
-const formattedContent = content
-  .split('\n\n')
-  .map(paragraph => paragraph.trim())
-  .filter(paragraph => paragraph.length > 0)
-  .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
-  .join('');
+const { entry } = Astro.props as { entry: CollectionEntry<'episodes'> };
+const { Content } = await entry.render();
 ---
 
-<Layout title={podcast.title}>
+<Layout title={entry.data.title}>
   <div class="episode-container">
-    <h1>{podcast.title}</h1>
-    <p class="episode-date">{podcast.date.toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
+    <h1>{entry.data.title}</h1>
+    <p class="episode-date">{new Date(entry.data.date).toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
     
-    {podcast.description && (
-      <p class="episode-description">{podcast.description}</p>
+    {entry.data.description && (
+      <p class="episode-description">{entry.data.description}</p>
     )}
     
     <div class="audio-player">
-      <audio controls src={podcast.url}>
+      <audio controls src={`/files/${entry.data.audioFile}`}>
         Your browser does not support the audio element.
       </audio>
-      <a href={podcast.url} download={podcast.filename} class="download-button">
+      <a href={`/files/${entry.data.audioFile}`} download={entry.data.audioFile} class="download-button">
         Download
       </a>
     </div>
@@ -68,7 +36,7 @@ const formattedContent = content
     <p class="episode-description" style="text-align: center;">Plan your next options play with <a href="https://optionstrat.com/coveredwheel">OptionStrat</a></p>
     
     <div class="episode-content">
-      <Fragment set:html={formattedContent} />
+      <Content />
     </div>
     
     <div class="back-link">

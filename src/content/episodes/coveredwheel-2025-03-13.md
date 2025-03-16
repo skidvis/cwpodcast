@@ -1,7 +1,9 @@
 ---
-link: '/files/coveredwheel-2025-03-13.mp3'
-title: '2025-03-13 - Bullish Options Sentiment Despite Market Dip'
-description: 'Analysis of options trading patterns across top tickers including TSLA, NVDA, LUNR, AI, and SOFI, revealing surprising bullish sentiment despite S&P 500 decline.'
+link: "/files/coveredwheel-2025-03-13.mp3"
+title: "2025-03-13 - Bullish Options Sentiment Despite Market Dip"
+description: "Analysis of options trading patterns across top tickers including TSLA, NVDA, LUNR, AI, and SOFI, revealing surprising bullish sentiment despite S&P 500 decline."
+date: 2025-03-13
+audioFile: "coveredwheel-2025-03-13.mp3"
 ---
 
 Welcome to The CoveredWheel Weekly Wrap-up, I'm your host Kate. Before we dive in, remember, this is not to be considered financial advice. Let's get started with our market overview.

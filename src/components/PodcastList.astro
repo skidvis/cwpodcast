@@ -1,7 +1,10 @@
 ---
-import { getPodcasts, type Podcast } from '../utils/podcasts';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
-const podcasts = getPodcasts();
+const episodeEntries = await getCollection('episodes');
+const podcasts = episodeEntries
+  .sort((a: CollectionEntry<'episodes'>, b: CollectionEntry<'episodes'>) => 
+    b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
 ---
 
 <div class="podcast-container">
@@ -11,24 +14,24 @@ const podcasts = getPodcasts();
     <p class="no-podcasts">No podcasts available yet.</p>
   ) : (
     <ul class="podcast-list">
-      {podcasts.map((podcast: Podcast) => (
+      {podcasts.map((podcast: CollectionEntry<'episodes'>) => (
         <li class="podcast-item">
           <div class="podcast-info">
             <h2>
-              <a href={`/episodes/${podcast.filename.replace('.mp3', '')}`} class="episode-link">
-                &#11166; {podcast.title}
+              <a href={`/episodes/${podcast.slug}`} class="episode-link">
+                &#11166; {podcast.data.title}
               </a>
             </h2>
-            <p class="podcast-date">{podcast.date.toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
-            {podcast.description && (
-              <p class="podcast-description">{podcast.description}</p>
+            <p class="podcast-date">{new Date(podcast.data.date).toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
+            {podcast.data.description && (
+              <p class="podcast-description">{podcast.data.description}</p>
             )}
           </div>
           <div class="podcast-controls">
-            <audio controls src={podcast.url}>
+            <audio controls src={`/files/${podcast.data.audioFile}`}>
               Your browser does not support the audio element.
             </audio>
-            <a href={podcast.url} download={podcast.filename} class="download-button">
+            <a href={`/files/${podcast.data.audioFile}`} download={podcast.data.audioFile} class="download-button">
               Download
             </a>
           </div>
