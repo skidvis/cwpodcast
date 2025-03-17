@@ -1,92 +1,151 @@
-# CoveredWheel.com Podcast
+# Generic Podcast Site
 
-A podcast directory and RSS feed built with Astro.
+A customizable podcast website built with Astro that can be easily configured for any podcast.
 
 ## Features
 
-- Display podcast episodes with audio player
-- Download MP3 files
-- Auto-updating RSS feed for podcast subscribers
-- iTunes podcast feed compatible
-- Responsive design
+- Responsive design that works on all devices
+- RSS feed for podcast directories (Apple Podcasts, Spotify, etc.)
+- Episode pages with audio player and download options
+- Customizable theme and branding
+- Easy deployment with Docker
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v18 or later recommended)
-- npm
+- Node.js 18.17.x or higher
+- npm or yarn
 
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
+1. Clone this repository
+```bash
+git clone https://github.com/yourusername/podcast-site.git
+cd podcast-site
+```
 
+2. Install dependencies
 ```bash
 npm install
 ```
 
-3. Start the development server:
+3. Customize your podcast settings
+Edit the file at `src/config/settings.ts` to match your podcast information.
 
+4. Run the development server
 ```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:4321`
+5. Visit `http://localhost:4321` to see your site
 
-## Adding New Podcasts
+## Configuration
 
-To add new podcast episodes, simply place MP3 files in the `files` directory. The filename format should be:
+All podcast-specific settings are in `src/config/settings.ts`. This includes:
 
+- Podcast title and description
+- Website information
+- iTunes/podcast feed details
+- Theme colors
+- Deployment settings
+
+Example configuration:
+
+```typescript
+export const podcastSettings = {
+  // Basic podcast information
+  title: 'My Amazing Podcast',
+  description: 'Listen to the latest episodes of My Amazing Podcast',
+  
+  // Website information
+  website: {
+    name: 'MyPodcast.com',
+    url: 'https://www.mypodcast.com/',
+  },
+  
+  // Site URL for RSS feed and links
+  siteUrl: 'https://podcast.mypodcast.com/',
+  
+  // iTunes/Podcast information
+  itunes: {
+    author: 'Podcast Author',
+    category: 'Technology',
+    explicit: false,
+    owner: {
+      name: 'Podcast Owner',
+      email: 'info@mypodcast.com',
+    },
+  },
+  
+  // Promotional content (optional)
+  promotions: [
+    {
+      text: 'Check out our sponsor',
+      url: 'https://sponsor.com/mypodcast',
+    },
+  ],
+  
+  // File paths configuration
+  paths: {
+    audio: '/files', // Path where audio files are served from
+  },
+  
+  // Deployment configuration
+  deployment: {
+    docker: {
+      username: 'dockerusername',
+      imageName: 'podcast-site',
+    },
+  },
+  
+  // Theme configuration
+  theme: {
+    colors: {
+      primary: '#4a6cf7',
+      primaryHover: '#3a5ce5',
+      text: '#333',
+      textLight: '#666',
+      background: '#f5f7fa',
+    },
+  },
+};
 ```
-name-YYYY-MM-DD.mp3
+
+## Adding Episodes
+
+1. Add your MP3 file to the `files/` directory with the naming format: `name-YYYY-MM-DD.mp3`
+2. Create a markdown file in `src/content/episodes/` with the same name (e.g., `name-YYYY-MM-DD.md`)
+3. Add frontmatter to the markdown file:
+
+```markdown
+---
+title: "Episode Title"
+description: "Episode description goes here"
+date: 2025-03-16
+audioFile: "name-2025-03-16.mp3"
+---
+
+Episode show notes and content go here.
 ```
 
-For example: `coveredwheel-2025-03-11.mp3`
+## Deployment
 
-The application will automatically:
-- Extract the title from the filename (converting to title case)
-- Extract the date from the filename
-- Add the new episode to the podcast list
-- Update the RSS feed
+### Docker
 
-## Building for Production
+This project includes a Dockerfile and GitHub Actions workflow for easy deployment.
 
-To build the application for production:
+1. Set up the following secrets in your GitHub repository:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token
 
-```bash
-npm run build
-```
+2. When you create a new release in GitHub, the workflow will automatically:
+   - Build the site
+   - Create a Docker image
+   - Push the image to Docker Hub
 
-The built files will be in the `dist` directory.
+3. You can then deploy the Docker image to your hosting provider.
 
-## RSS Feed
+## License
 
-The RSS feed is available at `/rss.xml` and is compatible with podcast players and iTunes.
-
-## Project Structure
-
-```text
-/
-├── files/                  # MP3 files directory
-│   └── *.mp3               # Podcast episode files
-├── public/                 # Static assets
-│   └── favicon.svg
-├── src/
-│   ├── components/         # UI components
-│   │   └── PodcastList.astro
-│   ├── layouts/            # Page layouts
-│   │   └── Layout.astro
-│   ├── pages/              # Page routes
-│   │   ├── index.astro     # Main podcast page
-│   │   ├── rss.xml.ts      # RSS feed generator
-│   │   └── files/[...file].ts # Dynamic route for serving MP3 files
-│   └── utils/              # Utility functions
-│       └── podcasts.ts     # Podcast file scanner
-└── package.json
-```
-
-## Technologies Used
-
-- [Astro](https://astro.build/) - The web framework
-- [@astrojs/rss](https://docs.astro.build/en/guides/rss/) - RSS feed generation
+This project is licensed under the MIT License - see the LICENSE file for details.

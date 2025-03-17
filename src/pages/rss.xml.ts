@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { APIContext } from 'astro';
+import { podcastSettings } from '../config/settings';
 
 export async function GET(context: APIContext) {
   const episodeEntries = await getCollection('episodes');
@@ -8,11 +9,11 @@ export async function GET(context: APIContext) {
     (a: CollectionEntry<'episodes'>, b: CollectionEntry<'episodes'>) => 
       b.data.date.getTime() - a.data.date.getTime()
   );
-  const site = context.site || new URL('https://podcast.coveredwheel.com/');
+  const site = context.site || new URL(podcastSettings.siteUrl);
   
   return rss({
-    title: 'CoveredWheel.com Podcast',
-    description: 'Listen to the latest episodes of the CoveredWheel.com Podcast',
+    title: podcastSettings.title,
+    description: podcastSettings.description,
     site: site.toString(),
     xmlns: {
       itunes: 'http://www.itunes.com/dtds/podcast-1.0.dtd',
@@ -33,13 +34,13 @@ export async function GET(context: APIContext) {
   })),
     customData: `
       <language>en-us</language>
-      <itunes:author>CoveredWheel.com</itunes:author>
-      <itunes:category text="Technology"/>
-      <itunes:explicit>false</itunes:explicit>
+      <itunes:author>${podcastSettings.itunes.author}</itunes:author>
+      <itunes:category text="${podcastSettings.itunes.category}"/>
+      <itunes:explicit>${podcastSettings.itunes.explicit ? 'true' : 'false'}</itunes:explicit>
       <itunes:image href="${new URL('/favicon.svg', site).toString()}"/>
       <itunes:owner>
-        <itunes:name>CoveredWheel.com</itunes:name>
-        <itunes:email>info@coveredwheel.com</itunes:email>
+        <itunes:name>${podcastSettings.itunes.owner.name}</itunes:name>
+        <itunes:email>${podcastSettings.itunes.owner.email}</itunes:email>
       </itunes:owner>
     `
   });

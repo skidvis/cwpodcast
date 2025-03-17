@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { podcastSettings } from '../../config/settings';
 
 export async function getStaticPaths() {
   const episodeEntries = await getCollection('episodes');
@@ -18,22 +19,24 @@ const { Content } = await entry.render();
 <Layout title={entry.data.title}>
   <div class="episode-container">
     <h1>{entry.data.title}</h1>
-    <p class="episode-date">{new Date(entry.data.date).toLocaleDateString()} - <a href="https://www.coveredwheel.com/" style="color:#333">CoveredWheel.com</a></p>
+    <p class="episode-date">{new Date(entry.data.date).toLocaleDateString()} - <a href={podcastSettings.website.url} style="color:#333">{podcastSettings.website.name}</a></p>
     
     {entry.data.description && (
       <p class="episode-description">{entry.data.description}</p>
     )}
     
     <div class="audio-player">
-      <audio controls src={`/files/${entry.data.audioFile}`}>
+      <audio controls src={`${podcastSettings.paths.audio}/${entry.data.audioFile}`}>
         Your browser does not support the audio element.
       </audio>
-      <a href={`/files/${entry.data.audioFile}`} download={entry.data.audioFile} class="download-button">
+      <a href={`${podcastSettings.paths.audio}/${entry.data.audioFile}`} download={entry.data.audioFile} class="download-button">
         Download
       </a>
     </div>
 
-    <p class="episode-description" style="text-align: center;">Plan your next options play with <a href="https://optionstrat.com/coveredwheel">OptionStrat</a></p>
+    {podcastSettings.promotions.length > 0 && (
+      <p class="episode-description" style="text-align: center;" set:html={podcastSettings.promotions[0]}></p>
+    )}
     
     <div class="episode-content">
       <Content />
@@ -86,7 +89,7 @@ const { Content } = await entry.render();
   
   .download-button {
     display: inline-block;
-    background: #4a6cf7;
+    background: {podcastSettings.theme.colors.primary};
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -98,7 +101,7 @@ const { Content } = await entry.render();
   }
   
   .download-button:hover {
-    background: #3a5ce5;
+    background: {podcastSettings.theme.colors.primaryHover};
   }
   
   .episode-content {
@@ -116,7 +119,7 @@ const { Content } = await entry.render();
   }
   
   .back-link a {
-    color: #4a6cf7;
+    color: {podcastSettings.theme.colors.primary};
     text-decoration: none;
     font-weight: 500;
     display: inline-flex;
@@ -125,7 +128,7 @@ const { Content } = await entry.render();
   }
   
   .back-link a:hover {
-    color: #3a5ce5;
+    color: {podcastSettings.theme.colors.primaryHover};
   }
   
   @media (max-width: 600px) {
