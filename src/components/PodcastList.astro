@@ -6,6 +6,10 @@ const episodeEntries = await getCollection('episodes');
 const podcasts = episodeEntries
   .sort((a: CollectionEntry<'episodes'>, b: CollectionEntry<'episodes'>) => 
     b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
+
+
+const colorPrimary = podcastSettings.theme.colors.primary
+const colorPrimaryHover = podcastSettings.theme.colors.primaryHover
 ---
 
 <div class="podcast-container">
@@ -56,7 +60,7 @@ const podcasts = episodeEntries
   </div>
 </div>
 
-<style>
+<style define:vars={{ colorPrimary, colorPrimaryHover}}>
   .podcast-container {
     max-width: 800px;
     margin: 0 auto;
@@ -145,7 +149,7 @@ const podcasts = episodeEntries
   
   .download-button {
     display: inline-block;
-    background: {podcastSettings.theme.colors.primary};
+    background: var(--colorPrimary);
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -156,7 +160,7 @@ const podcasts = episodeEntries
   }
   
   .download-button:hover {
-    background: {podcastSettings.theme.colors.primaryHover};
+    background: var(--colorPrimaryHover);
   }
   
   .rss-link {
@@ -168,14 +172,14 @@ const podcasts = episodeEntries
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: {podcastSettings.theme.colors.primary};
+    color: var(--colorPrimary);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
   }
   
   .rss-link a:hover {
-    color: {podcastSettings.theme.colors.primaryHover};
+    color: var(--colorPrimaryHover);
   }
   
   @media (max-width: 600px) {
