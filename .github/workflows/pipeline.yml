@@ -23,18 +23,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}      
     - name: Build the Docker image
-      run: |
-        # Read Docker settings from config file
-        DOCKER_USERNAME=$(node -e "const settings = require('./src/config/settings'); console.log(settings.podcastSettings.deployment.docker.username);")
-        DOCKER_IMAGE=$(node -e "const settings = require('./src/config/settings'); console.log(settings.podcastSettings.deployment.docker.imageName);")
-        
-        # Build the Docker image
-        docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE:latest .
+      run: docker build -t skidvis/podcast-coveredwheel-com:latest .
     - name: Push the docker image
-      run: |
-        # Read Docker settings from config file
-        DOCKER_USERNAME=$(node -e "const settings = require('./src/config/settings'); console.log(settings.podcastSettings.deployment.docker.username);")
-        DOCKER_IMAGE=$(node -e "const settings = require('./src/config/settings'); console.log(settings.podcastSettings.deployment.docker.imageName);")
-        
-        # Push the Docker image
-        docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+      run: docker push skidvis/podcast-coveredwheel-com:latest  
