@@ -14,7 +14,13 @@ const colorPrimaryHover = podcastSettings.theme.colors.primaryHover
 
 <div class="podcast-container">
   <h1><a style="color:black" href={podcastSettings.website.url}>{podcastSettings.website.name}</a> Podcast</h1>
-  
+  <div class="rss-link">
+    <p>
+      Subscribe to our podcast: 
+      <a href="/rss.xml" target="_blank">RSS Feed</a>
+    </p>
+  </div>
+
   {podcasts.length === 0 ? (
     <p class="no-podcasts">No podcasts available yet.</p>
   ) : (
@@ -44,20 +50,6 @@ const colorPrimaryHover = podcastSettings.theme.colors.primaryHover
       ))}
     </ul>
   )}
-  
-  <div class="rss-link">
-    <p>
-      Subscribe to our podcast: 
-      <a href="/rss.xml" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 11a9 9 0 0 1 9 9"></path>
-          <path d="M4 4a16 16 0 0 1 16 16"></path>
-          <circle cx="5" cy="19" r="1"></circle>
-        </svg>
-        RSS Feed
-      </a>
-    </p>
-  </div>
 </div>
 
 <style define:vars={{ colorPrimary, colorPrimaryHover}}>
