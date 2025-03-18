@@ -37,7 +37,7 @@ export const podcastSettings = {
   
   // File paths configuration
   paths: {
-    audio: '/files', // Path where audio files are served from
+    audio: 'https://storage.googleapis.com/sharkjets-podcasts/coveredwheel', // Path where audio files are served from
   },
   
   // Deployment configuration
