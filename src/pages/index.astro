@@ -1,8 +1,18 @@
 ---
 import PodcastList from '../components/PodcastList.astro';
 import Layout from '../layouts/Layout.astro';
+import { podcastSettings } from '../config/settings';
+
+// Homepage SEO metadata
+const title = podcastSettings.title;
+const description = podcastSettings.description;
+const canonicalURL = '/';
 ---
 
-<Layout>
+<Layout 
+  title={title}
+  description={description}
+  canonicalURL={canonicalURL}
+>
 	<PodcastList />
 </Layout>

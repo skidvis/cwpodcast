@@ -14,9 +14,40 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as { entry: CollectionEntry<'episodes'> };
 const { Content } = await entry.render();
+
+// Prepare SEO metadata for this episode
+const episodeTitle = `${entry.data.title} | ${podcastSettings.title}`;
+const episodeDescription = entry.data.description || `${entry.data.title} - ${new Date(entry.data.date).toLocaleDateString()}`;
+const canonicalURL = `/episodes/${entry.slug}`;
+const audioURL = `${podcastSettings.paths.audio}/${entry.data.audioFile}`;
+
+// Prepare structured data for this episode
+const episodeStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "PodcastEpisode",
+  "name": entry.data.title,
+  "datePublished": entry.data.date.toISOString(),
+  "description": episodeDescription,
+  "url": new URL(canonicalURL, podcastSettings.siteUrl).toString(),
+  "associatedMedia": {
+    "@type": "AudioObject",
+    "contentUrl": audioURL,
+    "encodingFormat": "audio/mpeg"
+  },
+  "partOfSeries": {
+    "@type": "PodcastSeries",
+    "name": podcastSettings.title,
+    "url": podcastSettings.siteUrl
+  }
+};
 ---
 
-<Layout title={entry.data.title}>
+<Layout 
+  title={episodeTitle}
+  description={episodeDescription}
+  canonicalURL={canonicalURL}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(episodeStructuredData)}></script>
   <div class="episode-container">
     <h1>{entry.data.title}</h1>
     <p class="episode-date">{new Date(entry.data.date).toLocaleDateString()} - <a href={podcastSettings.website.url} style="color:#333">{podcastSettings.website.name}</a></p>

@@ -30,6 +30,15 @@ export const podcastSettings = {
     },
   },
   
+  // SEO configuration
+  seo: {
+    keywords: 'podcast, options, wheel strategy, stocks',
+    defaultImage: '/favicon.svg', // Default social sharing image
+    twitterCardType: 'summary_large_image', // Twitter card type
+    locale: 'en_US', // Default locale
+    themeColor: '#4a6cf7', // Theme color for browser UI
+  },
+  
   // Promotional content (optional)
   promotions: [
     'Plan your next options play with <a href="https://optionstrat.com/coveredwheel">OptionStrat</a>'

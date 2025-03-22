@@ -1,18 +1,104 @@
 ---
 import { podcastSettings } from '../config/settings';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	canonicalURL?: string;
+}
+
+const { 
+	title = podcastSettings.title,
+	description = podcastSettings.description,
+	image = podcastSettings.seo.defaultImage,
+	canonicalURL = Astro.url.pathname
+} = Astro.props;
+
+// Construct full URLs
+const siteURL = new URL(podcastSettings.siteUrl);
+const pageURL = new URL(canonicalURL, siteURL);
+const imageURL = new URL(image, siteURL);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{podcastSettings.title}</title>
-		<meta name="description" content={podcastSettings.description} />
+		
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={podcastSettings.seo.keywords} />
+		<meta name="author" content={podcastSettings.itunes.author} />
+		<meta name="theme-color" content={podcastSettings.seo.themeColor} />
+		<meta name="robots" content="index, follow" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={pageURL} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={pageURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={imageURL} />
+		<meta property="og:locale" content={podcastSettings.seo.locale} />
+		<meta property="og:site_name" content={podcastSettings.website.name} />
+		
+		<!-- Twitter -->
+		<meta property="twitter:card" content={podcastSettings.seo.twitterCardType} />
+		<meta property="twitter:url" content={pageURL} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={imageURL} />
+		
+		<!-- RSS Feed and Sitemap -->
+		<link rel="alternate" type="application/rss+xml" title={`${podcastSettings.title} RSS Feed`} href={`${podcastSettings.siteUrl}/rss.xml`} />
+		<link rel="sitemap" type="application/xml" href={`${podcastSettings.siteUrl}/sitemap-index.xml`} />
+		
+		<!-- Google Tag Manager -->
+		<script is:inline>
+			(function(w,d,s,l,i){
+				w[l]=w[l]||[];
+				w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+				var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+				j.async=true;
+				j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+				if(f && f.parentNode) f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-WQSXFCRL');
+		</script>
+		<!-- End Google Tag Manager -->
+		
+		<!-- Structured Data for Podcast -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "PodcastSeries",
+			"name": podcastSettings.title,
+			"description": podcastSettings.description,
+			"url": podcastSettings.siteUrl,
+			"author": {
+				"@type": "Organization",
+				"name": podcastSettings.itunes.author,
+				"url": podcastSettings.website.url
+			},
+			"webFeed": {
+				"@type": "DataFeed",
+				"url": `${podcastSettings.siteUrl}/rss.xml`
+			}
+		})}></script>
 	</head>
 	<body>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQSXFCRL"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
 		<slot />
 	</body>
 </html>
