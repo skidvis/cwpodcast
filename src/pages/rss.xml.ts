@@ -60,7 +60,7 @@ export async function GET(context: APIContext) {
       <itunes:type>episodic</itunes:type>
       <itunes:category text="${podcastSettings.itunes.category}"/>
       <itunes:explicit>${podcastSettings.itunes.explicit ? 'true' : 'false'}</itunes:explicit>
-      <itunes:image href="${new URL('/videobg.png', site).toString()}"/>
+      <itunes:image href="${new URL('/favicon.svg', site).toString()}"/>
       <itunes:owner>
         <itunes:name>${podcastSettings.itunes.owner.name}</itunes:name>
         <itunes:email>${podcastSettings.itunes.owner.email}</itunes:email>
@@ -69,7 +69,7 @@ export async function GET(context: APIContext) {
       <googleplay:description><![CDATA[${podcastSettings.description}]]></googleplay:description>
       <googleplay:category text="${podcastSettings.itunes.category}"/>
       <googleplay:explicit>${podcastSettings.itunes.explicit ? 'yes' : 'no'}</googleplay:explicit>
-      <googleplay:image href="${new URL('/videobg.png', site).toString()}"/>
+      <googleplay:image href="${new URL('/favicon.svg', site).toString()}"/>
       <copyright>© ${new Date().getFullYear()} ${podcastSettings.website.name}</copyright>
     `
   });

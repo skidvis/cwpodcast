@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://podcast.SolidGoldFaith.com/sitemap.xml
+Sitemap: https://podcast.coveredwheel.com/sitemap.xml
